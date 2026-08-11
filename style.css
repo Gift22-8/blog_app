@@ -1,73 +1,130 @@
-*{
+* {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    font-family: Arial,sans-serif;
+    font-family: Arial, sans-serif;
+    color: #222;
+    background-color: #f8f8f8;
 }
-nav{
+
+nav {
     display: flex;
     justify-content: center;
     padding: 20px;
+    background-color: #111;
 }
 
 nav ul {
     display: flex;
     gap: 30px;
     list-style: none;
-    margin: o;
+    margin: 0;
     padding: 0;
 }
 
 nav a {
-   text-decoration: none;
-   color: black;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
 }
+
 main {
     max-width: 1000px;
     margin: 40px auto;
     padding: 0 20px;
 }
+
+/* Welcome section */
+main > section:first-child {
+    text-align: center;
+    padding: 50px 0;
+}
+
+main > section:first-child h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+main > section:first-child p {
+    font-size: 18px;
+    color: #666;
+}
+
+/* Blog section */
+main > section:nth-child(2) {
+    margin-top: 30px;
+}
+
+/* Form */
+#post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#post-form input,
+#post-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+#post-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+#post-form button {
+    width: fit-content;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #111;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#post-form button:hover {
+    background-color: #333;
+}
+
 article {
     padding: 20px;
     margin-top: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
 }
-section:first-child {
-   text-align: center;
-   padding: 40px 0;
-}
-section:first-child h1 {
-    font-size: 42px;
-    margin-bottom: 10px;
-}
-section:first-size p {
-    font-size: 18px;
-}
-section:nth-child(2) {
-    margin-top: 30px;
-}
+
 article h3 {
     margin-top: 0;
 }
+
 article p {
     line-height: 1.6;
 }
+
 article a {
     display: inline-block;
     margin-top: 10px;
 }
+
 @media (max-width: 600px) {
     nav ul {
         flex-direction: column;
-        align-items: center; 
+        align-items: center;
         gap: 15px;
     }
-    section:first-child h1 {
-          font: size 32px;
+
+    main > section:first-child h1 {
+        font-size: 32px;
     }
+
     main {
         padding: 0 15px;
     }
