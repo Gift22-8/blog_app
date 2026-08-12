@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create-Blog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="create-blog.html">Create Blog</a></li>
+                <li><a href="login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h1>Create a Blog Post</h1>
+            <p>Share your thoughts and ideas with the world.</p>
+        </section>
+
+        <section>
+            <form id="post-form">
+
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="Post title"
+                    required
+                >
+
+                <textarea
+                    id="excerpt"
+                    placeholder="Post description"
+                    required
+                ></textarea>
+
+                <input
+                    type="text"
+                    id="category"
+                    placeholder="Category"
+                    required
+                >
+
+                <button type="submit">Publish Post</button>
+
+            </form>
+            <div id="blog-posts"></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
