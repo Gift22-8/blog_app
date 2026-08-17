@@ -34,28 +34,29 @@ const postForm= document.getElementById("post-form");
 
 if (postForm) {
     postForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+        event.preventDefault();
 
-    const title = document.getElementById("title").value;
-    const excerpt = document.getElementById("excerpt").value;
-    const category = document.getElementById("category").value;
+       const title = document.getElementById("title").value;
+       const excerpt = document.getElementById("excerpt").value;
+       const category = document.getElementById("category").value;
 
+    fetch("http://localhost:3000/api/blogs", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            title: title,
+            excerpt: excerpt,
+            category: category
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    });
 
-    const article = document.createElement("article");
-
-    article.innerHTML = `
-       <h3>${title}</h3>
-        <p>${excerpt}</p>
-        <p>${category}</p>
-        <a href="#">Read More</a>
-    `;
-
-    blogPosts.appendChild(article);
-    console.log(title);
-    console.log(excerpt);
-    console.log(category);
-
-});
+  });
 
 }
 const registerForm = document.getElementById("register-form");
@@ -74,10 +75,21 @@ if (registerForm) {
             return;
         }
 
-        localStorage.setItem("userName", name);
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("userPassword", password);
-
+        fetch("http://localhost:3000/api/register", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password
+    })
+})
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+});
         alert("Registration successful!");
 
         window.location.href = "login.html";
@@ -92,14 +104,24 @@ if (loginForm) {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
-        const savedEmail = localStorage.getItem("userEmail");
-        const savedPassword = localStorage.getItem("userPassword");
+        fetch("http://localhost:3000/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
 
-        if (email === savedEmail && password === savedPassword) {
-            alert("Login successful!");
-            window.location.href = "dashboard.html";
-        } else {
-            alert("Invalid email or password.");
-        }
+            if (data.message === "Login successful!") {
+                alert("Login successful!");
+                window.location.href = "dashboard.html";
+            }
+        });
     });
 }

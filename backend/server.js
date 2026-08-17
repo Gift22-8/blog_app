@@ -60,18 +60,20 @@ app.post("/api/login", (req, res) => {
 });
 
 app.post("/api/blogs", (req, res) => {
-    const { title, content } = req.body;
+    const { title, excerpt, category } = req.body;
 
     blogs.push({
         title: title,
-        content: content
+        excerpt: excerpt,
+        category: category
     });
 
     res.json({
         message: "Blog created successfully!",
         blog: {
             title: title,
-            content: content
+            excerpt: excerpt,
+            category: category
         }
         
    });
