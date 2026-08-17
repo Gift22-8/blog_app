@@ -29,6 +29,7 @@ app.post("/api/register", (req, res) => {
 });
 
 console.log("Users:", users);
+
     res.json({
         message: "Registration successful!",
         user: {
@@ -36,6 +37,27 @@ console.log("Users:", users);
             email: email
         }
     });
+});
+
+app.post("/api/login", (req, res) => {
+
+    const { email, password } = req.body;
+    const user = users.find(user => user.email === email);
+
+    if (!user || user.password !== password) {
+        return res.status(401).json({
+            message: "Invalid email or password"
+        });
+    }
+
+    res.json({
+        message: "Login successful!",
+        user: {
+            name: user.name,
+            email: user.email
+        }
+    });
+
 });
 
 
