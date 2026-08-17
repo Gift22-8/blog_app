@@ -7,6 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 const users = [];
+const blogs = [];
 
 app.get("/", (req, res) => {
     res.send("Blog backend is running!");
@@ -27,8 +28,6 @@ app.post("/api/register", (req, res) => {
     email: email,
     password: password
 });
-
-console.log("Users:", users);
 
     res.json({
         message: "Registration successful!",
@@ -57,6 +56,26 @@ app.post("/api/login", (req, res) => {
             email: user.email
         }
     });
+
+});
+
+app.post("/api/blogs", (req, res) => {
+    const { title, content } = req.body;
+
+    blogs.push({
+        title: title,
+        content: content
+    });
+
+    res.json({
+        message: "Blog created successfully!",
+        blog: {
+            title: title,
+            content: content
+        }
+        
+   });
+  
 
 });
 
