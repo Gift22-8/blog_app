@@ -1,8 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
+
+const users = [];
 
 app.get("/", (req, res) => {
     res.send("Blog backend is running!");
@@ -13,6 +17,27 @@ app.get("/api/test", (req, res) => {
         message: "REST API is working!"
     });
 });
+
+
+app.post("/api/register", (req, res) => {
+    const { name, email, password } = req.body;
+
+    users.push({
+    name: name,
+    email: email,
+    password: password
+});
+
+console.log("Users:", users);
+    res.json({
+        message: "Registration successful!",
+        user: {
+            name: name,
+            email: email
+        }
+    });
+});
+
 
 app.listen(3000, () => {
     console.log("Server is running on http://localhost:3000");
