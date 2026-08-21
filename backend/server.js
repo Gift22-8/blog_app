@@ -8,6 +8,8 @@ require("dotenv").config();
 
 const client = new MongoClient(process.env.MONGODB_URI);
 
+const db = client.db("blog_app");
+
 const app = express();
 
 app.use(cors());
@@ -104,7 +106,3 @@ async function connectToDatabase() {
 }
 
 connectToDatabase();
-
-app.listen(3000, () => {
-    console.log("Server is running on http://localhost:3000");
-});
