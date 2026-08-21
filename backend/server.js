@@ -1,5 +1,12 @@
 const express = require("express");
+
 const cors = require("cors");
+
+const { MongoClient } = require("mongodb");
+
+require("dotenv").config();
+
+const client = new MongoClient(process.env.MONGODB_URI);
 
 const app = express();
 
@@ -81,6 +88,22 @@ app.post("/api/blogs", (req, res) => {
 
 });
 
+
+async function connectToDatabase() {
+    try {
+        await client.connect();
+        console.log("Connected to MongoDB!");
+
+        app.listen(3000, () => {
+            console.log("Server is running on http://localhost:3000");
+        });
+
+    } catch (error) {
+        console.error("MongoDB connection failed:", error);
+    }
+}
+
+connectToDatabase();
 
 app.listen(3000, () => {
     console.log("Server is running on http://localhost:3000");
