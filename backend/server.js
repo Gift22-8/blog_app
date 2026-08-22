@@ -31,6 +31,10 @@ app.get("/api/test", (req, res) => {
     });
 });
 
+app.get("/api/blogs", async (req, res) => {
+    const blogs = await blogsCollection.find({}).toArray();
+    res.json(blogs);
+});
 
 app.post("/api/register", async (req, res) => {
     const { name, email, password } = req.body;

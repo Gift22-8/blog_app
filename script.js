@@ -1,33 +1,22 @@
-const posts = [
-    {
-        title: "Getting Started with Web Development",
-        excerpt: "Learn the basics of html, css, and javascript and start building your first website.",
-        category: "Web Development"
-    },
-    {
-        title: "Why Javascript matters",
-        excerpt: "Discover how javascript makes websites interactive and brings your frotend to life.",
-        category: "Web Development"
-    },
-    {
-        title: "Tips for Becoming a better Developer",
-        excerpt: "Simple habits that can help you improve your coding skills and become a better developer.",
-        category: "Programming"
-    }
-];
 const blogPosts = document.getElementById("blog-posts");
-if (blogPosts) {
-    posts.forEach((post) => {
-        const article = document.createElement("article");
 
-         article.innerHTML = `
-             <h3>${post.title}</h3>
-             <p>${post.excerpt}</p>
-             <p>${post.category}</p>
-             <a href="#">Read More</a>
-         `;
-         blogPosts.appendChild(article);
-   });
+const apiUrl = "http://localhost:3000/api/blogs";
+
+if (blogPosts) {
+   fetch(apiUrl)
+        .then(response => response.json())
+        .then(blogs => {
+            blogs.forEach((blog) => {
+                const article = document.createElement("article");
+
+                article.innerHTML = `
+                    <h3>${blog.title}</h3>
+                    <p>${blog.excerpt}</p>
+                    <p>Category: ${blog.category}</p>
+                `;
+                blogPosts.appendChild(article);
+            });
+        });
 }
 
 const postForm= document.getElementById("post-form");
