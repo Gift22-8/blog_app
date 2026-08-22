@@ -2,7 +2,7 @@ const express = require("express");
 
 const cors = require("cors");
 
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 const bcrypt = require("bcrypt");
 
@@ -34,6 +34,12 @@ app.get("/api/test", (req, res) => {
 app.get("/api/blogs", async (req, res) => {
     const blogs = await blogsCollection.find({}).toArray();
     res.json(blogs);
+});
+
+app.get("/api/blogs/:id", async (req, res) => {
+    const id = req.params.id;
+    const blog = await blogsCollection.findOne({ _id: new ObjectId(id) });
+    res.json(blog);
 });
 
 app.post("/api/register", async (req, res) => {

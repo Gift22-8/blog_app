@@ -13,6 +13,7 @@ if (blogPosts) {
                     <h3>${blog.title}</h3>
                     <p>${blog.excerpt}</p>
                     <p>Category: ${blog.category}</p>
+                    <a href="blog-details.html?id=${blog._id}">Read More</a>
                 `;
                 blogPosts.appendChild(article);
             });
@@ -114,3 +115,16 @@ if (loginForm) {
         });
     });
 }
+const urlParams = new URLSearchParams(window.location.search);
+const blogId = urlParams.get("id");
+const detailsUrl = `http://localhost:3000/api/blogs/${blogId}`;
+fetch(detailsUrl)
+    .then(response => response.json())
+    .then(blog => {
+         const blogDetails = document.getElementById("blog-details");
+         blogDetails.innerHTML = `
+            <h1>${blog.title}</h1>
+            <p>${blog.excerpt}</p>
+            <p>Category: ${blog.category}</p>
+         `;
+})
