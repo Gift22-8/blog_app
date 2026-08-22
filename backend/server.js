@@ -4,18 +4,21 @@ const cors = require("cors");
 
 const { MongoClient } = require("mongodb");
 
+const bcrypt = require("bcrypt");
+
 require("dotenv").config();
 
 const client = new MongoClient(process.env.MONGODB_URI);
 
 const db = client.db("blog_app");
 
+const usersCollection = db.collection("users");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const users = [];
 const blogs = [];
 
 app.get("/", (req, res) => {
@@ -29,13 +32,15 @@ app.get("/api/test", (req, res) => {
 });
 
 
-app.post("/api/register", (req, res) => {
+app.post("/api/register", async (req, res) => {
     const { name, email, password } = req.body;
 
-    users.push({
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+   await usersCollection.insertOne({
     name: name,
     email: email,
-    password: password
+    password: hashedPassword
 });
 
     res.json({
@@ -47,12 +52,15 @@ app.post("/api/register", (req, res) => {
     });
 });
 
-app.post("/api/login", (req, res) => {
+app.post("/api/login", async (req, res) => {
 
     const { email, password } = req.body;
-    const user = users.find(user => user.email === email);
 
-    if (!user || user.password !== password) {
+    const user = await usersCollection.findOne({ email: email });
+
+    const passwordMatch = user && await bcrypt.compare(password, user.password);
+
+    if (!user || !passwordMatch) {
         return res.status(401).json({
             message: "Invalid email or password"
         });
