@@ -12,14 +12,14 @@ const client = new MongoClient(process.env.MONGODB_URI);
 
 const db = client.db("blog_app");
 
+const blogsCollection = db.collection("blogs");
+
 const usersCollection = db.collection("users");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-const blogs = [];
 
 app.get("/", (req, res) => {
     res.send("Blog backend is running!");
@@ -76,15 +76,16 @@ app.post("/api/login", async (req, res) => {
 
 });
 
-app.post("/api/blogs", (req, res) => {
+app.post("/api/blogs", async (req, res) => {
     const { title, excerpt, category } = req.body;
 
-    blogs.push({
+    const newBlog = {
         title: title,
         excerpt: excerpt,
         category: category
-    });
+};
 
+await blogsCollection.insertOne(newBlog);
     res.json({
         message: "Blog created successfully!",
         blog: {
