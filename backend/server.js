@@ -133,7 +133,20 @@ app.put("/api/blogs/:id", async (req, res) => {
     res.json({ message: "Blog updated successfully" });
 });
 
-
+app.delete("/api/blogs/:id", async (req, res) => {
+    try {
+       const id = req.params.id;
+       const objectId = new ObjectId(id);
+       const result = await blogsCollection.deleteOne({ _id: objectId });
+       if (result.deletedCount === 1) {
+           res.status(200).json({ message: "Blog deleted successfully" });
+       } else {
+        res.status(404).json({ message: "Blog not found" });
+    }
+    } catch (error) {
+        res.status(500).json({ message: "server error" });
+    }
+});
 
 
 async function connectToDatabase() {

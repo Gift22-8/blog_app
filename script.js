@@ -14,10 +14,26 @@ if (blogPosts) {
                     <p>${blog.excerpt}</p>
                     <p>Category: ${blog.category}</p>
                     <a href="blog-details.html?id=${blog._id}">Read More</a>
+                    <a href="create-blog.html?id=${blog._id}">Edit</a>
+                    <button type="button" class="delete-btn" data-id="${blog._id}">Delete</button>
                 `;
                 blogPosts.appendChild(article);
             });
+    
+
+        document.querySelectorAll(".delete-btn").forEach((button) => {
+            button.addEventListener("click", () => {
+                const id = button.dataset.id;
+                fetch(`http://localhost:3000/api/blogs/${id}`, {
+                    method: "DELETE"
+                })
+                   .then(response => response.json())
+                   .then(data => {
+                       console.log(data);
+                   });
+            });
         });
+    });
 }
 
 const postForm= document.getElementById("post-form");
@@ -30,8 +46,8 @@ if (postForm) {
        const excerpt = document.getElementById("excerpt").value;
        const category = document.getElementById("category").value;
 
-    fetch("http://localhost:3000/api/blogs", {
-        method: "POST",
+    fetch(blogId ? `http://localhost:3000/api/blogs/${blogId}` : "http://localhost:3000/api/blogs", {
+        method: blogId ? "PUT" :  "POST",
         headers: {
             "Content-Type": "application/json"
         },
@@ -117,6 +133,11 @@ if (loginForm) {
 }
 const urlParams = new URLSearchParams(window.location.search);
 const blogId = urlParams.get("id");
+if (blogId) {
+    console.log("Edit mode. Blog ID:", blogId);
+} else {
+    console.log("Create mode");
+}
 const detailsUrl = `http://localhost:3000/api/blogs/${blogId}`;
 fetch(detailsUrl)
     .then(response => response.json())
