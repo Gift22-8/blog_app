@@ -95,6 +95,8 @@ app.post("/api/blogs", async (req, res) => {
         category: category
 };
 
+
+
 await blogsCollection.insertOne(newBlog);
     res.json({
         message: "Blog created successfully!",
@@ -108,6 +110,30 @@ await blogsCollection.insertOne(newBlog);
   
 
 });
+
+app.put("/api/blogs/:id", async (req, res) => {
+    const blogId = req.params.id;
+    const { title, excerpt, category } = req.body;
+    const result = await blogsCollection.updateOne(
+        { _id: new ObjectId(blogId) },
+        {
+            $set: {
+                title: title,
+                excerpt: excerpt,
+                category: category
+            }
+        }
+        
+    );
+    
+    if (result.matchedCount === 0) {
+        return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res.json({ message: "Blog updated successfully" });
+});
+
+
 
 
 async function connectToDatabase() {
