@@ -53,12 +53,6 @@ function authenticateToken(req, res, next) {
     
 }
 
-app.get("/api/protected", authenticateToken, (req, res) => {
-    res.json({
-        message: "You accessed a protected route!",
-        user: req.user
-    });
-});
 app.get("/api/test", (req, res) => {
     res.json({
         message: "REST API is working!"
@@ -83,6 +77,12 @@ app.get("/api/profile", authenticateToken, async (req, res) => {
     const user = await usersCollection.findOne({
         _id: new ObjectId(req.user.userId)
     });
+
+    if (!user) {
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
 
     res.json({
         name: user.name,

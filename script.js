@@ -1,9 +1,24 @@
+const token = localStorage.getItem("token");
+
+if (!token && window.location.pathname.includes("dashboard.html")) {
+    window.location.href = "login.html";
+}
+
 const blogPosts = document.getElementById("blog-posts");
 
-const apiUrl = "http://localhost:3000/api/blogs";
+const apiUrl = window.location.pathname.includes("dashboard.html")
+    ? "http://localhost:3000/api/my-blogs"
+    : "http://localhost:3000/api/blogs";
 
 if (blogPosts) {
-   fetch(apiUrl)
+
+   const token = localStorage.getItem("token");
+
+   fetch(apiUrl, {
+       headers: {
+           "Authorization": `Bearer ${token}`
+       }
+   })
         .then(response => response.json())
         .then(blogs => {
             blogs.forEach((blog) => {
@@ -25,7 +40,11 @@ if (blogPosts) {
             button.addEventListener("click", () => {
                 const id = button.dataset.id;
                 fetch(`http://localhost:3000/api/blogs/${id}`, {
-                    method: "DELETE"
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                
                 })
                    .then(response => response.json())
                    .then(data => {
@@ -41,15 +60,17 @@ const postForm= document.getElementById("post-form");
 if (postForm) {
     postForm.addEventListener("submit", (event) => {
         event.preventDefault();
+        const token = localStorage.getItem("token");
 
-       const title = document.getElementById("title").value;
-       const excerpt = document.getElementById("excerpt").value;
-       const category = document.getElementById("category").value;
+        const title = document.getElementById("title").value;
+        const excerpt = document.getElementById("excerpt").value;
+        const category = document.getElementById("category").value;
 
     fetch(blogId ? `http://localhost:3000/api/blogs/${blogId}` : "http://localhost:3000/api/blogs", {
         method: blogId ? "PUT" :  "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+             "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
             title: title,
@@ -125,27 +146,74 @@ if (loginForm) {
             console.log(data);
 
             if (data.message === "Login successful!") {
+                localStorage.setItem("token", data.token);
+                
                 alert("Login successful!");
                 window.location.href = "dashboard.html";
             }
         });
     });
 }
+
+const profileButton = document.getElementById("profile-button");
+const profileMenu = document.getElementById("profile-menu");
+const profileName = document.getElementById("profile-name");
+const profileEmail = document.getElementById("profile-email");
+
+if (profileButton && profileMenu) {
+
+    profileMenu.style.display = "none";
+
+    profileButton.addEventListener("click", () => {
+        if (profileMenu.style.display === "none") {
+            profileMenu.style.display = "block";
+        } else {
+            profileMenu.style.display = "none";
+        }
+    });
+
+    const token = localStorage.getItem("token");
+
+    fetch("http://localhost:3000/api/profile", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            profileName.textContent = data.name;
+            profileEmail.textContent = data.email;
+        });
+}
+
+const logoutButton = document.getElementById("logout-button");
+
+if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+    });
+}
+
+
 const urlParams = new URLSearchParams(window.location.search);
 const blogId = urlParams.get("id");
 if (blogId) {
     console.log("Edit mode. Blog ID:", blogId);
+
+    const detailsUrl = `http://localhost:3000/api/blogs/${blogId}`;
+
+    fetch(detailsUrl)
+        .then(response => response.json())
+        .then(blog => {
+            const blogDetails = document.getElementById("blog-details");
+
+            blogDetails.innerHTML = `
+                <h1>${blog.title}</h1>
+                <p>${blog.excerpt}</p>
+                <p>Category: ${blog.category}</p>
+            `;
+        });
 } else {
     console.log("Create mode");
 }
-const detailsUrl = `http://localhost:3000/api/blogs/${blogId}`;
-fetch(detailsUrl)
-    .then(response => response.json())
-    .then(blog => {
-         const blogDetails = document.getElementById("blog-details");
-         blogDetails.innerHTML = `
-            <h1>${blog.title}</h1>
-            <p>${blog.excerpt}</p>
-            <p>Category: ${blog.category}</p>
-         `;
-})
