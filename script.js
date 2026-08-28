@@ -1,3 +1,15 @@
+function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}
 const token = localStorage.getItem("token");
 
 if (!token && window.location.pathname.includes("dashboard.html")) {
@@ -22,14 +34,19 @@ if (blogPosts) {
         .then(response => response.json())
         .then(blogs => {
             blogs.forEach((blog) => {
+
+                 const shortExcerpt = blog.excerpt.length > 120
+                     ? blog.excerpt.substring(0, 120) + "..."
+                     : blog.excerpt;
+
                 const article = document.createElement("article");
 
                 article.innerHTML = `
                     <h3>${blog.title}</h3>
-                    <p>${blog.excerpt}</p>
+                    <p>${shortExcerpt}</p>
                     <p>Category: ${blog.category}</p>
                     <a href="blog-details.html?id=${blog._id}">Read More</a>
-                    <a href="create-blog.html?id=${blog._id}">Edit</a>
+                   <a href="create-blog.html?id=${blog._id}" class="edit-btn">Edit</a>
                     <button type="button" class="delete-btn" data-id="${blog._id}">Delete</button>
                 `;
                 blogPosts.appendChild(article);
@@ -38,6 +55,9 @@ if (blogPosts) {
 
         document.querySelectorAll(".delete-btn").forEach((button) => {
             button.addEventListener("click", () => {
+                if (!confirm("Are you sure you want to delete this blog?")) {
+                    return;
+                }
                 const id = button.dataset.id;
                 fetch(`http://localhost:3000/api/blogs/${id}`, {
                     method: "DELETE",
@@ -46,16 +66,13 @@ if (blogPosts) {
                     }
                 
                 })
-                   .then(response => response.json())
-                   .then(data => {
-                       console.log(data);
-                   });
+                  
             });
         });
     });
 }
 
-const postForm= document.getElementById("post-form");
+const postForm = document.getElementById("post-form");
 
 if (postForm) {
     postForm.addEventListener("submit", (event) => {
@@ -64,10 +81,11 @@ if (postForm) {
 
         const title = document.getElementById("title").value;
         const excerpt = document.getElementById("excerpt").value;
+        const content = document.getElementById("content").value;
         const category = document.getElementById("category").value;
 
     fetch(blogId ? `http://localhost:3000/api/blogs/${blogId}` : "http://localhost:3000/api/blogs", {
-        method: blogId ? "PUT" :  "POST",
+        method: blogId ? "PUT" : "POST",
         headers: {
             "Content-Type": "application/json",
              "Authorization": `Bearer ${token}`
@@ -75,12 +93,16 @@ if (postForm) {
         body: JSON.stringify({
             title: title,
             excerpt: excerpt,
+            content: content,
             category: category
         })
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+        
+         if (data.message) {
+             window.location.href = "dashboard.html";
+    }
     });
 
   });
@@ -98,28 +120,30 @@ if (registerForm) {
         const confirmPassword = document.getElementById("confirm-password").value;
 
         if (password !== confirmPassword) {
-            alert("Passwords do not match.");
+           showToast("Passwords do not match.");
             return;
         }
 
         fetch("http://localhost:3000/api/register", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password
-    })
-})
-.then(response => response.json())
-.then(data => {
-    console.log(data);
-});
-        alert("Registration successful!");
-
-        window.location.href = "login.html";
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "Registration successful!") {
+                localStorage.setItem("toastMessage", "Registration successful!");
+                window.location.href = "login.html";
+            }else {
+               showToast(data.message);
+            }
+        });
     });
 }
 const loginForm = document.getElementById("login-form");
@@ -137,18 +161,18 @@ if (loginForm) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                email: email,
-                password: password
+            email: email,
+            password: password
             })
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+           
 
             if (data.message === "Login successful!") {
                 localStorage.setItem("token", data.token);
                 
-                alert("Login successful!");
+                localStorage.setItem("toastMessage", "Login successful!");
                 window.location.href = "dashboard.html";
             }
         });
@@ -199,7 +223,7 @@ if (logoutButton) {
 const urlParams = new URLSearchParams(window.location.search);
 const blogId = urlParams.get("id");
 if (blogId) {
-    console.log("Edit mode. Blog ID:", blogId);
+   
 
     const detailsUrl = `http://localhost:3000/api/blogs/${blogId}`;
 
@@ -208,12 +232,20 @@ if (blogId) {
         .then(blog => {
             const blogDetails = document.getElementById("blog-details");
 
+            const content = blog.content || "";
+
             blogDetails.innerHTML = `
                 <h1>${blog.title}</h1>
                 <p>${blog.excerpt}</p>
+                ${content ? `<p>${content}</p>` : ""}
                 <p>Category: ${blog.category}</p>
             `;
         });
-} else {
-    console.log("Create mode");
+}
+
+const toastMessage = localStorage.getItem("toastMessage");
+
+if (toastMessage) {
+    showToast(toastMessage);
+    localStorage.removeItem("toastMessage");
 }

@@ -6,7 +6,7 @@
     <title>Register</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="auth-page">
     <header>
         <nav>
             <ul>
@@ -17,38 +17,43 @@
         </nav>
     </header>
     <main>
-        <section>
+        <section class="auth-page">
             <h1>Create an Account</h1>
 
-            <form id="register-form">
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="Full name"
-                    required
+            <form id="register-form" autocomplete="off">
+               <label for="name">Full Name</label>
+               <input
+                   type="text"
+                   id="name"
+                   placeholder="Enter your full name"
+                   required
                 >
-
+                <label for="email">Email</label>
                 <input
                     type="email"
                     id="email"
-                    placeholder="Email"
+                    placeholder="Enter your email address"
+                    autocomplete="off"
                     required
                 >
 
+                <label for="password">Password</label>
                 <input
                     type="password"
                     id="password"
-                    placeholder="Password"
+                    placeholder="Create a password"
+                    autocomplete="new-password"
                     required
                 >
 
+                <label for="confirm-password">Confirm Password</label>
                 <input
                     type="password"
                     id="confirm-password"
-                    placeholder="Confirm password"
+                    placeholder="Re-enter your password"
+                    autocomplete="new-password"
                     required
                 >
-
                 <button type="submit">Register</button>
             </form>
 
@@ -58,6 +63,7 @@
             </p>
         </section>
     </main>
+    <div id="toast"></div>
     <script src="script.js"></script>
 </body>
 </html>

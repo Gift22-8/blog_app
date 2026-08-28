@@ -99,19 +99,27 @@ app.get("/api/blogs/:id", async (req, res) => {
 app.post("/api/register", async (req, res) => {
     const { name, email, password } = req.body;
 
+    const existingUser = await usersCollection.findOne({ email });
+
+    if (existingUser) {
+        return res.status(409).json({
+            message: "Email already registered"
+        });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
    await usersCollection.insertOne({
-    name: name,
-    email: email,
-    password: hashedPassword
+       name,
+       email,
+       password: hashedPassword
 });
 
     res.json({
         message: "Registration successful!",
         user: {
-            name: name,
-            email: email
+            name,
+            email
         }
     });
 });
@@ -153,24 +161,22 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.post("/api/blogs", authenticateToken, async (req, res) => {
-    const { title, excerpt, category } = req.body;
+    const { title, excerpt, content, category } = req.body;
 
     const newBlog = {
         title: title,
         excerpt: excerpt,
+        content: content,
         category: category,
         userId: req.user.userId
-};
-
-
-
+    };
 await blogsCollection.insertOne(newBlog);
     res.json({
         message: "Blog created successfully!",
         blog: {
-            title: title,
-            excerpt: excerpt,
-            category: category
+            title,
+            excerpt,
+            category
         }
         
    });
@@ -180,7 +186,7 @@ await blogsCollection.insertOne(newBlog);
 
 app.put("/api/blogs/:id", authenticateToken, async (req, res) => {
     const blogId = req.params.id;
-    const { title, excerpt, category } = req.body;
+    const { title, excerpt, content, category } = req.body;
     const result = await blogsCollection.updateOne(
         {  
              _id: new ObjectId(blogId),
@@ -189,9 +195,10 @@ app.put("/api/blogs/:id", authenticateToken, async (req, res) => {
         },
         {
             $set: {
-                title: title,
-                excerpt: excerpt,
-                category: category
+                title,
+                excerpt,
+                content,
+                category
             }
         }
         
@@ -218,7 +225,7 @@ app.delete("/api/blogs/:id", authenticateToken, async (req, res) => {
         res.status(404).json({ message: "Blog not found" });
     }
     } catch (error) {
-        res.status(500).json({ message: "server error" });
+        res.status(500).json({ message: "Server error" });
     }
 });
 

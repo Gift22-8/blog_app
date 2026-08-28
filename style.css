@@ -29,22 +29,24 @@ nav {
     padding: 20px;
     background-color: var(--background);
     }
-header{
-        border-bottom: 1px solid var(--border);
-        width: 100%
-    }
+header {
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8, 11, 16, 0.95);
+    backdrop-filter: blur(10px);
+}
 .logo {
     color: var(--text);
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 800;
     text-decoration: none;
-    letter-spacing: -0.5px;
- }
+    letter-spacing: -0.8px;
+    transition: color 0.3s ease;
+}
 
 .logo:hover {
-    color: var(--accent);
-     }
-
+    color: var(--accent-light);
+}
 nav ul {
     display: flex;
     align-items: center;
@@ -58,19 +60,34 @@ nav ul {
 nav li {
     position: relative;
 }
-
 nav a {
+    position: relative;
     text-decoration: none;
     color: var(--muted);
     font-weight: 600;
-    font-size: 15px;
+    font-size: 14px;
     transition: color 0.3s ease;
 }
 
 nav a:hover {
     color: var(--accent-light);
 }
+nav a:not(.logo)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -7px;
+    width: 100%;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s ease;
+}
 
+nav a:not(.logo):hover::after {
+    transform: scaleX(1);
+}
 #profile-button {
     padding: 9px 16px;
     border: 1px solid var(--border);
@@ -144,28 +161,37 @@ main {
 
 
 /* Welcome section */
-main > section:first-child {
+.home-page main > section:first-child {
+    position: relative;
     text-align: center;
-    padding: 60px 20px;
+    padding: 90px 20px 80px;
     border-bottom: 1px solid var(--border);
 }
 
-main > section:first-child h1 {
-    max-width: 800px;
-    margin: 0 auto 20px;
-    font-size: clamp(36px, 6vw, 64px);
-    line-height: 1.1;
-    letter-spacing: -1.5px;
+.home-page main > section:first-child::before {
+    content: "THE DAILY • YOUR SPACE FOR IDEAS";
+    display: inline-block;
+    margin-bottom: 24px;
+    color: var(--accent-light);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+.home-page main > section:first-child h1 {
+    max-width: 850px;
+    margin: 0 auto 24px;
+    font-size: clamp(42px, 7vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -2.5px;
 }
 
-main > section:first-child p {
-    max-width: 600px;
+.home-page main > section:first-child p {
+    max-width: 620px;
     margin: 0 auto;
     color: var(--muted);
     font-size: 18px;
-    
 }
-
 /* Blog section */
 main > section:nth-child(2) {
     margin-top: 30px;
@@ -227,112 +253,135 @@ main > section:nth-child(2) {
 article {
     position: relative;
     padding: 28px;
-    background: linear-gradient(145deg, #181818, #101010);
-    border: 1px solid #252525;
-    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
     overflow: hidden;
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 article:hover {
-    transform: translateY(-6px);
-    border-color: #2563eb;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 article::before {
     content: "THE DAILY • BLOG";
     display: block;
     padding-bottom: 12px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #2d3f63;
-    color: #60a5fa;
+    border-bottom: 1px solid var(--border);
+    color: var(--accent-light);
     font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 2px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
 }
 article h3 {
     margin: 0 0 14px;
-    color: #f5f5f5;
-    font-size: 26px;
-    line-height: 1.2;
+    color: var(--text);
+    font-size: 25px;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
 }
-
 article p {
     margin: 8px 0;
     color: #a1a1aa;
     line-height: 1.7;
 }
-
 article p:last-of-type {
+    display: inline-block;
     margin-top: 18px;
-    color: #60a5fa;
-    font-size: 12px;
-    font-weight: bold;
+    padding: 5px 9px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--accent-light);
+    background: rgba(59, 130, 246, 0.06);
+    font-size: 10px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.5px;
 }
-
 article a {
     display: inline-block;
     margin-top: 18px;
-    margin-right: 18px;
-    color: #60a5fa;
+    margin-right: 12px;
+    padding: 9px 15px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--accent-light);
+    background: transparent;
     text-decoration: none;
-    font-weight: bold;
-    transition: color 0.2s ease;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.25s ease;
 }
-
 article a:hover {
-    color: #93c5fd;
+    border-color: var(--accent);
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--text);
+    transform: translateY(-1px);
 }
 .delete-btn {
     margin-top: 18px;
-    padding: 9px 16px;
-    border: 1px solid #333;
-    border-radius: 8px;
+    padding: 9px 15px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
     background: transparent;
-    color: #a1a1aa;
+    color: var(--muted);
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.25s ease;
 }
-
 .delete-btn:hover {
     border-color: #ef4444;
     color: #f87171;
     background: rgba(239, 68, 68, 0.08);
+    transform: translateY(-1px);
 }
 #blog-posts {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 24px;
     margin-top: 30px;
     align-items: start;
 }
+article h3 {
+    transition: color 0.25s ease;
+}
+
+article:hover h3 {
+    color: var(--accent-light);
+}
 @media (max-width: 600px) {
-     nav {
-        padding: 20px;
+
+    nav {
+        padding: 16px;
         flex-direction: column;
-        gap: 18px;
+        gap: 14px;
+        
     }
+
     nav ul {
+        width: 100%;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 18px;
+        gap: 14px 20px;
+    }
+    nav a {
+        font-size: 13px;
     }
    main {
         padding: 0 16px;
     }
-     main > section:first-child {
+     .home-page main > section:first-child {
         padding: 70px 10px;
     }
-    main > section:first-child h1 {
-       font-size: 48px;
-       letter-spacing: -2px;
+     .home-page main > section:first-child h1 {
+        font-size: clamp(38px, 11vw, 48px);
+       letter-spacing: -1.5px;
     }
 
-    main > section:first-child p {
+    .home-page main > section:first-child p {
     font-size: 16px;
     
     }
@@ -344,16 +393,58 @@ article a:hover {
     article {
         padding: 22px;
     }
+    .blog-detail {
+        margin: 30px auto;
+        padding: 25px;
+    }
+
+    .blog-detail h1 {
+        font-size: 38px;
+        letter-spacing: -1.5px;
+    }
+
+    .blog-detail p {
+        font-size: 16px;
+    }
+
+    #post-form input,
+    #post-form textarea {
+        font-size: 16px;
+    }
+
+    #post-form button {
+        width: 100%;
+    }
+    .auth-container {
+        padding: 26px 20px;
+    }
+
+    .auth-container h1 {
+        font-size: 30px;
+    }
 }
 main > section:nth-child(2) {
-    margin-top: 30px;
-    padding: 60px 0;
+    margin-top: 0;
+    padding: 65px 0;
 }
 
 main > section:nth-child(2) h2 {
-    margin-bottom: 30px;
-    font-size: 34px;
-    letter-spacing: -1px;
+    position: relative;
+    margin: 0 0 30px;
+    padding-bottom: 18px;
+    font-size: 36px;
+    letter-spacing: -1.5px;
+    border-bottom: 1px solid var(--border);
+}
+
+main > section:nth-child(2) h2::before {
+    content: "FEATURED";
+    display: block;
+    margin-bottom: 8px;
+    color: var(--accent-light);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
 }
 html {
     scroll-behavior: smooth;
@@ -362,4 +453,291 @@ html {
 button,
 a {
     -webkit-tap-highlight-color: transparent;
+}
+.auth-page main {
+    min-height: calc(100vh - 81px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 430px;
+    padding: 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.auth-container h1 {
+    margin: 0 0 28px;
+    font-size: 34px;
+    letter-spacing: -1px;
+}
+
+.auth-container p {
+    margin-top: 22px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.auth-container p a {
+    color: var(--accent-light);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-container p a:hover {
+    color: var(--text);
+}
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#login-form input {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+#login-form input::placeholder {
+    color: var(--muted);
+}
+
+#login-form input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+#login-form button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 4px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+}
+
+#login-form button:hover {
+    background: var(--accent-light);
+    transform: translateY(-1px);
+}
+#register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#register-form input {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+#register-form input::placeholder {
+    color: var(--muted);
+}
+
+#register-form input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+#register-form button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 4px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+}
+
+#register-form button:hover {
+    background: var(--accent-light);
+    transform: translateY(-1px);
+}
+/* Create Blog Page */
+
+.create-page main {
+    max-width: 850px;
+}
+
+.create-page main > section:first-child {
+    text-align: center;
+    padding: 55px 20px 35px;
+}
+
+.create-page main > section:first-child h1 {
+    margin: 0 0 12px;
+    font-size: clamp(36px, 6vw, 52px);
+    line-height: 1.1;
+}
+
+.create-page main > section:first-child p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 17px;
+}
+/* Dashboard Page */
+
+.dashboard-page main {
+    max-width: 1100px;
+}
+
+.dashboard-page main > section:first-child {
+    text-align: center;
+    padding: 55px 20px 35px;
+}
+
+.dashboard-page main > section:first-child h1 {
+    margin: 0 0 12px;
+    font-size: clamp(38px, 6vw, 56px);
+    line-height: 1.1;
+}
+
+.dashboard-page main > section:first-child p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 17px;
+}
+
+.dashboard-page main > section:nth-child(2) {
+    padding: 45px 0 65px;
+}
+
+.dashboard-page main > section:nth-child(2) h2 {
+    margin: 0 0 25px;
+    font-size: 32px;
+    letter-spacing: -1px;
+}
+.create-post-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 30px;
+    padding: 11px 18px;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.25s ease;
+}
+
+.create-post-btn::before {
+    content: "+";
+    font-size: 18px;
+    line-height: 1;
+}
+
+.create-post-btn:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+    transform: translateY(-2px);
+}
+.edit-btn {
+    color: var(--text);
+    background: var(--surface-light);
+}
+
+.edit-btn:hover {
+    border-color: var(--accent);
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--accent-light);
+}
+.blog-detail {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 45px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.blog-detail h1 {
+    margin: 0 0 20px;
+    font-size: clamp(36px, 6vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -2px;
+}
+
+.blog-detail p {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.blog-detail p:last-child {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--accent-light);
+    background: rgba(59, 130, 246, 0.06);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+#toast {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    padding: 13px 18px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 1000;
+}
+
+#toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+    #toast {
+        left: 16px;
+        right: 16px;
+        bottom: 20px;
+        text-align: center;
+    }
 }
