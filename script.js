@@ -19,8 +19,8 @@ if (!token && window.location.pathname.includes("dashboard.html")) {
 const blogPosts = document.getElementById("blog-posts");
 
 const apiUrl = window.location.pathname.includes("dashboard.html")
-    ? "http://localhost:3000/api/my-blogs"
-    : "http://localhost:3000/api/blogs";
+    ? "https://blog-app-backend-5vzv.onrender.com/api/my-blogs"
+    : "https://blog-app-backend-5vzv.onrender.com/api/blogs";
 
 if (blogPosts) {
 
@@ -59,7 +59,7 @@ if (blogPosts) {
                     return;
                 }
                 const id = button.dataset.id;
-                fetch(`http://localhost:3000/api/blogs/${id}`, {
+                fetch(`https://blog-app-backend-5vzv.onrender.com/api/blogs/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -84,7 +84,7 @@ if (postForm) {
         const content = document.getElementById("content").value;
         const category = document.getElementById("category").value;
 
-    fetch(blogId ? `http://localhost:3000/api/blogs/${blogId}` : "http://localhost:3000/api/blogs", {
+    fetch(blogId ? `https://blog-app-backend-5vzv.onrender.com/api/blogs/${blogId}` : "https://blog-app-backend-5vzv.onrender.com/api/blogs", {
         method: blogId ? "PUT" : "POST",
         headers: {
             "Content-Type": "application/json",
@@ -124,7 +124,7 @@ if (registerForm) {
             return;
         }
 
-        fetch("http://localhost:3000/api/register", {
+        fetch("https://blog-app-backend-5vzv.onrender.com/api/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -155,7 +155,7 @@ if (loginForm) {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
-        fetch("http://localhost:3000/api/login", {
+        fetch("https://blog-app-backend-5vzv.onrender.com/api/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -198,7 +198,7 @@ if (profileButton && profileMenu) {
 
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:3000/api/profile", {
+    fetch("https://blog-app-backend-5vzv.onrender.com/api/profile", {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -225,7 +225,7 @@ const blogId = urlParams.get("id");
 if (blogId) {
    
 
-    const detailsUrl = `http://localhost:3000/api/blogs/${blogId}`;
+    const detailsUrl = `https://blog-app-backend-5vzv.onrender.com/api/blogs/${blogId}`;
 
     fetch(detailsUrl)
         .then(response => response.json())
