@@ -8,6 +8,68 @@
     --accent-light: #60a5fa;
     --border: #202938;
 }
+
+body.light-theme {
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --surface-light: #f1f5f9;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #2563eb;
+    --accent-light: #3b82f6;
+    --border: #e2e8f0;
+}
+
+body.light-theme header {
+    background: rgba(248, 250, 252, 0.95);
+}
+
+body.light-theme article {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme article:hover {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme article p {
+    color: var(--muted);
+}
+
+body.light-theme article p:last-of-type {
+    background: rgba(37, 99, 235, 0.08);
+}
+
+body.light-theme #profile-menu {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .auth-container {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.theme-toggle-btn {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.25s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.theme-toggle-btn:hover {
+    border-color: var(--accent);
+    transform: scale(1.08);
+}
+
 * {
     box-sizing: border-box;
 }

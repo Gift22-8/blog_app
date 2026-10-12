@@ -1,3 +1,37 @@
+// --- Theme Handling (Dark / Light Mode) ---
+(function initTheme() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+        document.body.classList.add("light-theme");
+    }
+
+    function setupThemeToggle() {
+        const toggleBtn = document.getElementById("theme-toggle");
+        if (!toggleBtn) return;
+
+        const updateIcon = () => {
+            const isLight = document.body.classList.contains("light-theme");
+            toggleBtn.textContent = isLight ? "🌙" : "☀️";
+            toggleBtn.setAttribute("title", isLight ? "Switch to Dark Mode" : "Switch to Light Mode");
+        };
+
+        updateIcon();
+
+        toggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("light-theme");
+            const isLight = document.body.classList.contains("light-theme");
+            localStorage.setItem("theme", isLight ? "light" : "dark");
+            updateIcon();
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupThemeToggle);
+    } else {
+        setupThemeToggle();
+    }
+})();
+
 function showToast(message) {
     const toast = document.getElementById("toast");
 
