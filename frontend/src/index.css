@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import "quill/dist/quill.snow.css";
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Quill Editor Dark Theme Styling */
+.dark .ql-toolbar {
+  background-color: #171e29;
+  border-color: #202938 !important;
+}
+
+.dark .ql-container {
+  background-color: #11161f;
+  border-color: #202938 !important;
+  color: #f5f7fa;
+}
+
+.dark .ql-stroke {
+  stroke: #94a3b8 !important;
+}
+
+.dark .ql-fill {
+  fill: #94a3b8 !important;
+}
+
+.dark .ql-picker {
+  color: #94a3b8 !important;
+}
+
+.dark .ql-picker-options {
+  background-color: #171e29 !important;
+  border-color: #202938 !important;
+}
+
+.dark .ql-editor.ql-blank::before {
+  color: #64748b !important;
+}
