@@ -275,6 +275,7 @@ app.delete("/api/blogs/:id", authenticateToken, async (req, res) => {
 async function startServer() {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
+    console.log("Connected database:", mongoose.connection.name);
     console.log("Connected to MongoDB via Mongoose!");
 
     const PORT = process.env.PORT || 3000;
